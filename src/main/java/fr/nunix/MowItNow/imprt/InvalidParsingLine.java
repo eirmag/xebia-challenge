@@ -1,4 +1,4 @@
-package fr.nunix.MowItNow;
+package fr.nunix.MowItNow.imprt;
 
 public class InvalidParsingLine extends Exception {
 

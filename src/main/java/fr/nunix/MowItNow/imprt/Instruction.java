@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.javatuples.Pair;
 
-import fr.nunix.MowItNow.Coordinate;
-import fr.nunix.MowItNow.InvalidParsingLine;
-import fr.nunix.MowItNow.Lawn;
-import fr.nunix.MowItNow.Mow;
 import fr.nunix.MowItNow.command.Command;
+import fr.nunix.MowItNow.object.MovableObjectException;
+import fr.nunix.MowItNow.object.Mow;
+import fr.nunix.MowItNow.surface.Coordinate;
+import fr.nunix.MowItNow.surface.Lawn;
 
 /**
  * This class abstracts the interpretation of input files
@@ -33,6 +33,7 @@ public class Instruction {
 	 * 
 	 * @param instructions
 	 * @throws InvalidParsingLine 
+	 * @throws MovableObjectException 
 	 * @throws Exception 
 	 */
 	public Instruction(Reader reader) throws InvalidParsingLine{
@@ -49,7 +50,7 @@ public class Instruction {
 				String mowPos = line;
 				String mowInst = bf.readLine();
 				
-				Mow m = Mow.parseMow(mowPos);
+				Mow m = Mow.parseMow(mowPos, lawn);
 				List<Command> commands = Command.parseCommands(mowInst);
 				
 				Pair<Mow, List<Command>> mowInstruction = new Pair<Mow, List<Command>>(m, commands);
@@ -62,6 +63,10 @@ public class Instruction {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new InvalidParsingLine("Error while reading the lines");
+		} catch (MovableObjectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new InvalidParsingLine("Error while parsing the lines. Make sure that lawn is existing and mow has coordinates.");
 		}
 		
 	}

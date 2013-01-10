@@ -1,7 +1,5 @@
 package fr.nunix.MowItNow;
 
-import static org.junit.Assert.*;
-
 import java.io.StringReader;
 import java.util.List;
 import java.util.Observable;
@@ -11,7 +9,12 @@ import org.javatuples.Pair;
 import org.junit.Test;
 
 import fr.nunix.MowItNow.command.Command;
+import fr.nunix.MowItNow.controler.MowControler;
 import fr.nunix.MowItNow.imprt.Instruction;
+import fr.nunix.MowItNow.imprt.InvalidParsingLine;
+import fr.nunix.MowItNow.object.MovableObjectException;
+import fr.nunix.MowItNow.object.Mow;
+import fr.nunix.MowItNow.surface.Coordinate;
 
 public class MowControlerTest {
 
@@ -26,15 +29,16 @@ public class MowControlerTest {
 
      
 	@Test
-	public void mowControler() throws InvalidParsingLine {
+	public void mowControler() throws InvalidParsingLine, MovableObjectException {
 		Instruction instruction = new Instruction(new StringReader(finalTest));
-		
+
+		System.out.println("Extracted Lawn : " + instruction.getLawn());
 		for (Pair<Mow, List<Command>> pair : instruction.getMows()){
-			
+
 			Mow m = pair.getValue0();
+			System.out.println("--- Mow : " + m);
 			List<Command> commands = pair.getValue1();
 			
-			MowControler mc = MowControler.getInstance(instruction.getLawn());
 			m.addObserver(new Observer() {
 				
 				@Override
@@ -44,8 +48,7 @@ public class MowControlerTest {
 				
 				}
 			});
-			
-			mc.deploy(m);
+			System.out.println("... execute " + commands.size() + " commands.");
 			m.execute(commands);
 
 		}

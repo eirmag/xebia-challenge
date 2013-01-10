@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import fr.nunix.MowItNow.InvalidParsingLine;
+import fr.nunix.MowItNow.imprt.InvalidParsingLine;
 
 public class CommandTest {
 

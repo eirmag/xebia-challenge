@@ -1,6 +1,10 @@
-package fr.nunix.MowItNow;
+package fr.nunix.MowItNow.surface;
 
 import java.util.StringTokenizer;
+
+import fr.nunix.MowItNow.imprt.InvalidParsingLine;
+import fr.nunix.MowItNow.spatial.NotSupportedOrientation;
+import fr.nunix.MowItNow.spatial.Orientation;
 
 public class Coordinate {
 
@@ -12,11 +16,24 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 		this.orientation = o;
+		this.boundary = Boundary.NO_LIMIT;
 	}
+	
+	private Boundary boundary;
+	
+	public void setBoundary (Boundary boundary) throws OutOfBoundaryException{
+		if (!(boundary.heightMove(y) && boundary.widthMove(x)))
+			throw new OutOfBoundaryException("you are trying to put limit on an object already out of bound");
+		
+		this.boundary = boundary;
+	
+	}
+	
 
 	/**
 	 * We are in a 2D system, with both positive and negative values.
 	 * Boundaries are checked by the lawn
+	 * @param boundary 
 	 * 
 	 * @return
 	 * @throws NotSupportedOrientation
@@ -24,16 +41,21 @@ public class Coordinate {
 	public Coordinate forward()  {
 		switch (this.orientation) {
 		case EAST:
-			x += 1;
+			if (boundary.widthMove(x+1))
+				x += 1;
 			break;
 		case NORTH:
-			y += 1;
+			if (boundary.heightMove(y+1))
+				y += 1;
+			
 			break;
 		case WEST:
-			x -= 1;
+			if (boundary.widthMove(x-1))
+				x -= 1;
 			break;
 		case SOUTH:
-			y -= 1;
+			if (boundary.heightMove(y-1))
+				y -= 1;
 			break;
 		}
 		
@@ -64,12 +86,24 @@ public class Coordinate {
 		return this.orientation;
 	}
 	
+	@Override 
+	public int hashCode() {
+		int result = 11;
+		
+		result = 17 * result + this.x;
+		result = 31 * result + this.y;
+
+		result = 13 * result + this.orientation.hashCode();
+		
+		return result;
+	};
+	
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Coordinate){
 			Coordinate c = (Coordinate) o;
-		if (this.x == c.x && this.y == c.y && this.orientation == c.orientation)
-			return true;
+			if (this.x == c.x && this.y == c.y && this.orientation == c.orientation)
+				return true;
 		}
 		
 		return false;
@@ -93,5 +127,18 @@ public class Coordinate {
 			throw new InvalidParsingLine(
 					"The mow requires exactly two integers and one character to indicate the position.");
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return new StringBuilder()
+			.append("(")
+			.append(this.x)
+			.append(",")
+			.append(this.y)
+			.append(",")
+			.append(this.orientation)
+			.append(")").toString();
+			
 	}
 }

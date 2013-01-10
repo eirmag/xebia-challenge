@@ -2,9 +2,34 @@ package fr.nunix.MowItNow;
 
 import static org.junit.Assert.*;
 
+import org.javatuples.Pair;
 import org.junit.Test;
 
+import fr.nunix.MowItNow.spatial.NotSupportedOrientation;
+import fr.nunix.MowItNow.spatial.Orientation;
+import fr.nunix.MowItNow.surface.Boundary;
+import fr.nunix.MowItNow.surface.Coordinate;
+import fr.nunix.MowItNow.surface.OutOfBoundaryException;
+
 public class CoordinateTest {
+	
+	private Boundary boundary;
+	
+	public CoordinateTest ()
+	{
+		this.boundary = new Boundary(new Pair<Integer, Integer>(0, 0), new Pair<Integer, Integer>(5, 5));
+		
+	}
+	
+	@Test
+	public void incrementWithBoundary () throws NotSupportedOrientation{
+		Coordinate c = new Coordinate(0, 0, Orientation.SOUTH);
+		c.setBoundary(boundary);
+		c.forward().forward().forward();
+		assertEquals (0, c.getX());
+		assertEquals (0, c.getY());
+		assertEquals (Orientation.SOUTH, c.getOrientation());
+	}
 	
 	@Test
 	public void increment () throws NotSupportedOrientation{
@@ -58,6 +83,12 @@ public class CoordinateTest {
 		assertEquals (Orientation.EAST, c.getOrientation());
 		c.left();
 		assertEquals (Orientation.NORTH, c.getOrientation());
+	}
+	
+	@Test(expected=OutOfBoundaryException.class)
+	public void outofboundary (){
+		Coordinate c = new Coordinate(5, 6, Orientation.NORTH);
+		c.setBoundary(boundary);
 	}
 
 

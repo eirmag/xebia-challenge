@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import fr.nunix.MowItNow.spatial.Orientation;
+
 public class OrientationTest {
 
 	public OrientationTest(){
