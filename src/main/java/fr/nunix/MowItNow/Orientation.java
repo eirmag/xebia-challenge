@@ -58,5 +58,18 @@ public enum Orientation {
 	abstract public Orientation left();
 
 	abstract public Orientation right();
+	
+	static Orientation parseOrientation(String st) throws InvalidParsingLine{
+		if (st.equals(LetterConvention.NORTH))
+			return NORTH;
+		if (st.equals(LetterConvention.SOUTH))
+			return SOUTH;
+		if (st.equals(LetterConvention.EAST))
+			return EAST;
+		if (st.equals(LetterConvention.WEST))
+			return WEST;
+		
+		throw new InvalidParsingLine("The letter '" + st + "' is not recognized as a valid orientation");
+	}
 
 }

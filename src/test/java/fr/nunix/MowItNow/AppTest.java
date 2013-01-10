@@ -2,6 +2,8 @@ package fr.nunix.MowItNow;
 
 import static org.junit.Assert.*;
 
+import java.util.Observer;
+
 import org.junit.Test;
 
 public class AppTest {
@@ -12,15 +14,13 @@ public class AppTest {
     
 	@Test
 	public void xebiaset() {
-
-        Lawn l = new Lawn (5,5);
         
         Coordinate c1 = new Coordinate (1, 2, Orientation.NORTH);
         Coordinate c2 = new Coordinate (3, 3, Orientation.EAST);
         
 
-        Mow m1 = new Mow (l, c1);
-        Mow m2 = new Mow (l, c2);
+        Mow m1 = new Mow (c1);
+        Mow m2 = new Mow (c2);
         
         // m1.start("GAGAGAGAA");
         for (int i=0; i<4; ++i){
@@ -43,45 +43,53 @@ public class AppTest {
     	m2.right();
     	m2.forward();
         
-        assertTrue(m1.check(finalc1));
-        assertTrue(m2.check(finalc2));
+    	
+        assertEquals(m1.getPosition(), finalc1);
+        assertEquals(m2.getPosition(), finalc2);
 	}
 	
 	@Test
 	public void testooo() {
 
         Lawn l = new Lawn (5,5);
-        
+		MowControler mc = MowControler.getInstance(l);
+		
+		
+		
         Coordinate c1 = new Coordinate (0, 0, Orientation.NORTH);
         
 
-        Mow m1 = new Mow (l, c1);
+        Mow m1 = new Mow (c1);
+        mc.deploy(m1);
+        final Observer observer = new App();
+        m1.addObserver(observer);
+        
         m1.left();
         m1.forward();
-        assertEquals(m1.getCoordinate().getX(), 0);
-        assertEquals(m1.getCoordinate().getY(), 0);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.WEST);
+        assertEquals(m1.getPosition().getX(), 0);
+        assertEquals(m1.getPosition().getY(), 0);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.WEST);
 
         m1.left();
         m1.forward();
 
-        assertEquals(m1.getCoordinate().getX(), 0);
-        assertEquals(m1.getCoordinate().getY(), 0);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.SOUTH);
+        assertEquals(m1.getPosition().getX(), 0);
+        assertEquals(m1.getPosition().getY(), 0);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.SOUTH);
         
         m1.left();
         m1.forward();
 
-        assertEquals(m1.getCoordinate().getX(), 1);
-        assertEquals(m1.getCoordinate().getY(), 0);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.EAST);
+        assertEquals(m1.getPosition().getX(), 1);
+        assertEquals(m1.getPosition().getY(), 0);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.EAST);
         
         m1.left();
         m1.forward();
 
-        assertEquals(m1.getCoordinate().getX(), 1);
-        assertEquals(m1.getCoordinate().getY(), 1);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.NORTH);
+        assertEquals(m1.getPosition().getX(), 1);
+        assertEquals(m1.getPosition().getY(), 1);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.NORTH);
 	}
 	
 	@Test
@@ -92,33 +100,33 @@ public class AppTest {
         Coordinate c2 = new Coordinate (5, 5, Orientation.EAST);
         
 
-        Mow m1 = new Mow (l, c2);
+        Mow m1 = new Mow (c2);
         
         m1.forward();
-        assertEquals(m1.getCoordinate().getX(), 5);
-        assertEquals(m1.getCoordinate().getY(), 5);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.EAST);
+        assertEquals(m1.getPosition().getX(), 5);
+        assertEquals(m1.getPosition().getY(), 5);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.EAST);
 
         m1.left();
         m1.forward();
 
-        assertEquals(m1.getCoordinate().getX(), 5);
-        assertEquals(m1.getCoordinate().getY(), 5);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.NORTH);
+        assertEquals(m1.getPosition().getX(), 5);
+        assertEquals(m1.getPosition().getY(), 5);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.NORTH);
         
         m1.left();
         m1.forward();
 
-        assertEquals(m1.getCoordinate().getX(), 4);
-        assertEquals(m1.getCoordinate().getY(), 5);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.WEST);
+        assertEquals(m1.getPosition().getX(), 4);
+        assertEquals(m1.getPosition().getY(), 5);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.WEST);
         
         m1.left();
         m1.forward();
 
-        assertEquals(m1.getCoordinate().getX(), 4);
-        assertEquals(m1.getCoordinate().getY(), 4);
-        assertEquals(m1.getCoordinate().getOrientation(), Orientation.SOUTH);
+        assertEquals(m1.getPosition().getX(), 4);
+        assertEquals(m1.getPosition().getY(), 4);
+        assertEquals(m1.getPosition().getOrientation(), Orientation.SOUTH);
 	}
 	
 
@@ -130,7 +138,7 @@ public class AppTest {
         Coordinate c2 = new Coordinate (5, 5, Orientation.EAST);
         
 
-        Mow m1 = new Mow (l, c2);
+        Mow m1 = new Mow (c2);
         
         fail("lawn is 0");
 	}

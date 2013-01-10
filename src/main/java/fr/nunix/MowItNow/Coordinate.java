@@ -1,5 +1,7 @@
 package fr.nunix.MowItNow;
 
+import java.util.StringTokenizer;
+
 public class Coordinate {
 
 	private int x;
@@ -62,10 +64,34 @@ public class Coordinate {
 		return this.orientation;
 	}
 	
-	public boolean equals(Coordinate c) {
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Coordinate){
+			Coordinate c = (Coordinate) o;
 		if (this.x == c.x && this.y == c.y && this.orientation == c.orientation)
 			return true;
+		}
 		
 		return false;
+	}
+
+	public static Coordinate parseCoordinate(String mowPos) throws InvalidParsingLine {
+
+		StringTokenizer st = new StringTokenizer(mowPos);
+
+		if (st.countTokens() != 3)
+			throw new InvalidParsingLine(
+					"The mow position has to have exactly two integers and one char on a line.");
+
+		try {
+			int x = Integer.parseInt(st.nextToken());
+			int y = Integer.parseInt(st.nextToken());
+			Orientation o = Orientation.parseOrientation(st.nextToken());
+
+			return new Coordinate(x, y, o);
+		} catch (NumberFormatException e) {
+			throw new InvalidParsingLine(
+					"The mow requires exactly two integers and one character to indicate the position.");
+		}
 	}
 }
