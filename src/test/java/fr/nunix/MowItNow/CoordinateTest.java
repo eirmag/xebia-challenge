@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import fr.nunix.MowItNow.object.MovableObject;
 import fr.nunix.MowItNow.object.MovableObjectException;
-import fr.nunix.MowItNow.object.Mow;
-import fr.nunix.MowItNow.spatial.NotSupportedOrientation;
+import fr.nunix.MowItNow.object.Mower;
+import fr.nunix.MowItNow.spatial.NotSupportedOrientationException;
 import fr.nunix.MowItNow.spatial.Orientation;
-import fr.nunix.MowItNow.surface.IncorrectLawnLimit;
+import fr.nunix.MowItNow.surface.IncorrectLawnLimitException;
 import fr.nunix.MowItNow.surface.InfiniteLawn;
 import fr.nunix.MowItNow.surface.Lawn;
 import fr.nunix.MowItNow.surface.Coordinate;
@@ -18,10 +18,10 @@ import fr.nunix.MowItNow.surface.OutOfBoundaryException;
 public class CoordinateTest {
 	
 	@Test
-	public void incrementWithBoundary () throws NotSupportedOrientation, MovableObjectException, IncorrectLawnLimit{
+	public void incrementWithBoundary () throws NotSupportedOrientationException, MovableObjectException, IncorrectLawnLimitException{
 		
 		Coordinate c = new Coordinate(0, 0, Orientation.SOUTH);
-		MovableObject m = new Mow(c,new Lawn(0,0));
+		MovableObject m = new Mower(c,new Lawn(0,0));
 		m.moveForward();
 		m.moveForward();
 		m.moveForward();
@@ -31,9 +31,9 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void increment () throws NotSupportedOrientation, MovableObjectException{
+	public void increment () throws NotSupportedOrientationException, MovableObjectException{
 		Coordinate c = new Coordinate(0, 0, Orientation.SOUTH);
-		MovableObject m = new Mow(c,new InfiniteLawn());
+		MovableObject m = new Mower(c,new InfiniteLawn());
 		m.moveForward();
 		m.moveForward();
 		m.moveForward();
@@ -43,9 +43,9 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void roundAbout () throws NotSupportedOrientation, MovableObjectException{
+	public void roundAbout () throws NotSupportedOrientationException, MovableObjectException{
 		Coordinate c = new Coordinate(4, 4, Orientation.SOUTH);
-		MovableObject m = new Mow(c,new InfiniteLawn());
+		MovableObject m = new Mower(c,new InfiniteLawn());
 		m.turnLeft();
 		m.moveForward();
 		m.turnLeft();
@@ -60,9 +60,9 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void turnAndMove () throws NotSupportedOrientation, MovableObjectException{
+	public void turnAndMove () throws NotSupportedOrientationException, MovableObjectException{
 		Coordinate c = new Coordinate(1, 3, Orientation.WEST);
-		MovableObject m = new Mow(c,new InfiniteLawn());
+		MovableObject m = new Mower(c,new InfiniteLawn());
 		m.turnRight();
 		m.moveForward();
 		assertEquals (1, c.getX());
@@ -72,10 +72,10 @@ public class CoordinateTest {
 	
 
 	@Test
-	public void rotateRight () throws NotSupportedOrientation, MovableObjectException{
+	public void rotateRight () throws NotSupportedOrientationException, MovableObjectException{
 		Coordinate c = new Coordinate(0, 0, Orientation.NORTH);
 
-		MovableObject m = new Mow(c,new InfiniteLawn());
+		MovableObject m = new Mower(c,new InfiniteLawn());
 		m.turnRight();
 		assertEquals (Orientation.EAST, c.getOrientation());
 		m.turnRight();
@@ -87,10 +87,10 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void rotateLeft () throws NotSupportedOrientation, MovableObjectException{
+	public void rotateLeft () throws NotSupportedOrientationException, MovableObjectException{
 		Coordinate c = new Coordinate(0, 0, Orientation.NORTH);
 
-		MovableObject m = new Mow(c,new InfiniteLawn());
+		MovableObject m = new Mower(c,new InfiniteLawn());
 		m.turnLeft();
 		assertEquals (Orientation.WEST, c.getOrientation());
 		m.turnLeft();
@@ -102,9 +102,9 @@ public class CoordinateTest {
 	}
 	
 	@Test(expected=OutOfBoundaryException.class)
-	public void outofboundary () throws MovableObjectException, IncorrectLawnLimit{
+	public void outofboundary () throws MovableObjectException, IncorrectLawnLimitException{
 		Coordinate c = new Coordinate(5, 6, Orientation.NORTH);
-		new Mow(c,new Lawn(5,5));
+		new Mower(c,new Lawn(5,5));
 	}
 
 

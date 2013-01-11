@@ -1,7 +1,7 @@
 package fr.nunix.MowItNow.spatial;
 
 import fr.nunix.MowItNow.controler.LetterConvention;
-import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLineException;
 
 /**
  * Another possibility was to manage orientation given the degree angle, ranging
@@ -62,7 +62,7 @@ public enum Orientation {
 
 	abstract public Orientation right();
 	
-	public static Orientation parseOrientation(String st) throws InvalidParsingLine{
+	public static Orientation parseOrientation(String st) throws InvalidParsingLineException{
 		if (st.equals(LetterConvention.NORTH))
 			return NORTH;
 		if (st.equals(LetterConvention.SOUTH))
@@ -72,7 +72,7 @@ public enum Orientation {
 		if (st.equals(LetterConvention.WEST))
 			return WEST;
 		
-		throw new InvalidParsingLine("The letter '" + st + "' is not recognized as a valid orientation");
+		throw new InvalidParsingLineException("The letter '" + st + "' is not recognized as a valid orientation");
 	}
 
 }

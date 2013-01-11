@@ -13,7 +13,7 @@ import org.javatuples.Pair;
 
 import fr.nunix.MowItNow.command.Command;
 import fr.nunix.MowItNow.object.MovableObjectException;
-import fr.nunix.MowItNow.object.Mow;
+import fr.nunix.MowItNow.object.Mower;
 import fr.nunix.MowItNow.surface.Coordinate;
 import fr.nunix.MowItNow.surface.Lawn;
 
@@ -35,14 +35,14 @@ public class Instruction {
 	 * 
 	 * 
 	 * @param instructions
-	 * @throws InvalidParsingLine 
+	 * @throws InvalidParsingLineException 
 	 * @throws MovableObjectException 
 	 * @throws Exception 
 	 */
-	public Instruction(Reader reader) throws InvalidParsingLine{
+	public Instruction(Reader reader) throws InvalidParsingLineException{
 		
 		BufferedReader bf = new BufferedReader(reader);
-		List<Pair<Mow, List<Command>>> mows = new ArrayList<Pair<Mow,List<Command>>>();
+		List<Pair<Mower, List<Command>>> mows = new ArrayList<Pair<Mower,List<Command>>>();
 		
 		try {
 			String lawnDim = bf.readLine();
@@ -53,10 +53,10 @@ public class Instruction {
 				String mowPos = line;
 				String mowInst = bf.readLine();
 				
-				Mow m = Mow.parseMow(mowPos, lawn);
+				Mower m = Mower.parseMow(mowPos, lawn);
 				List<Command> commands = Command.parseCommands(mowInst);
 				
-				Pair<Mow, List<Command>> mowInstruction = new Pair<Mow, List<Command>>(m, commands);
+				Pair<Mower, List<Command>> mowInstruction = new Pair<Mower, List<Command>>(m, commands);
 				mows.add(mowInstruction);
 			}
 			
@@ -65,11 +65,11 @@ public class Instruction {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new InvalidParsingLine("Error while reading the lines");
+			throw new InvalidParsingLineException("Error while reading the lines");
 		} catch (MovableObjectException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new InvalidParsingLine("Error while parsing the lines. Make sure that lawn is existing and mow has coordinates.");
+			throw new InvalidParsingLineException("Error while parsing the lines. Make sure that lawn is existing and mow has coordinates.");
 		}
 		
 	}
@@ -77,14 +77,14 @@ public class Instruction {
 	public Lawn getLawn() {
 		return lawn;
 	}
-	public List<Pair<Mow, List<Command>>> getMows() {
+	public List<Pair<Mower, List<Command>>> getMows() {
 		return mows;
 	}
 
 	final private Lawn lawn;
-	final private List<Pair<Mow, List<Command>>> mows;
+	final private List<Pair<Mower, List<Command>>> mows;
 	
-	public final static void main (String args[]) throws InvalidParsingLine{
+	public final static void main (String args[]) throws InvalidParsingLineException{
 		
 		final String finalTest = new StringBuilder()
 	    .append("5 5\n")
@@ -96,9 +96,9 @@ public class Instruction {
 		Instruction instruction = new Instruction(new StringReader(finalTest));
 
 		System.out.println("Extracted Lawn : " + instruction.getLawn());
-		for (Pair<Mow, List<Command>> pair : instruction.getMows()){
+		for (Pair<Mower, List<Command>> pair : instruction.getMows()){
 
-			Mow m = pair.getValue0();
+			Mower m = pair.getValue0();
 			System.out.println("--- Mow : " + m);
 			List<Command> commands = pair.getValue1();
 			

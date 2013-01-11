@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 import org.javatuples.Pair;
 
 import fr.nunix.MowItNow.object.MovableObject;
-import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLineException;
 
 /**
  * Concrete surface. there is no tree, bush, plants. It's a delimitate empty lawn.
@@ -19,9 +19,9 @@ public class Lawn implements Surface{
 	private Set<MovableObject> movableObjects;
 	private final Boundary boundary;
 
-	public Lawn(int width, int height) throws IncorrectLawnLimit {
+	public Lawn(int width, int height) throws IncorrectLawnLimitException {
 		if (0 > width || 0 > height)
-			throw new IncorrectLawnLimit();
+			throw new IncorrectLawnLimitException();
 		
 		this.movableObjects = new HashSet<MovableObject>();
 		this.boundary = new SimpleBoundary (new Pair<Integer, Integer> (0,0), new Pair<Integer, Integer> (width,height));
@@ -32,13 +32,13 @@ public class Lawn implements Surface{
 	 * 
 	 * @param lawnDim
 	 * @return
-	 * @throws InvalidParsingLine
+	 * @throws InvalidParsingLineException
 	 */
-	public static Lawn parseLawn(String lawnDim) throws InvalidParsingLine {
+	public static Lawn parseLawn(String lawnDim) throws InvalidParsingLineException {
 		StringTokenizer st = new StringTokenizer(lawnDim);
 
 		if (st.countTokens() != 2)
-			throw new InvalidParsingLine(
+			throw new InvalidParsingLineException(
 					"The lawn dimension has to have exactly two positive integers on a line.");
 
 		try {
@@ -47,7 +47,7 @@ public class Lawn implements Surface{
 
 			return new Lawn(width, height);
 		} catch (Exception e) {
-			throw new InvalidParsingLine(
+			throw new InvalidParsingLineException(
 					"The lawn requires exactly two positive integers.");
 		}
 

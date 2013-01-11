@@ -2,7 +2,7 @@ package fr.nunix.MowItNow.surface;
 
 import java.util.StringTokenizer;
 
-import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLineException;
 import fr.nunix.MowItNow.spatial.Orientation;
 
 /**
@@ -59,12 +59,12 @@ public class Coordinate {
 		return false;
 	}
 
-	public static Coordinate parseCoordinate(String mowPos) throws InvalidParsingLine {
+	public static Coordinate parseCoordinate(String mowPos) throws InvalidParsingLineException {
 
 		StringTokenizer st = new StringTokenizer(mowPos);
 
 		if (st.countTokens() != 3)
-			throw new InvalidParsingLine(
+			throw new InvalidParsingLineException(
 					"The mow position has to have exactly two integers and one char on a line.");
 
 		try {
@@ -74,7 +74,7 @@ public class Coordinate {
 
 			return new Coordinate(x, y, o);
 		} catch (NumberFormatException e) {
-			throw new InvalidParsingLine(
+			throw new InvalidParsingLineException(
 					"The mow requires exactly two integers and one character to indicate the position.");
 		}
 	}

@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Observable;
 
 import fr.nunix.MowItNow.command.Command;
-import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLineException;
 import fr.nunix.MowItNow.surface.OutOfBoundaryException;
 import fr.nunix.MowItNow.surface.Coordinate;
 import fr.nunix.MowItNow.surface.Surface;
 
-public class Mow extends Observable implements MovableObject{
+public class Mower extends Observable implements MovableObject{
 	
 	/**
 	 * current position of the mow
@@ -27,7 +27,7 @@ public class Mow extends Observable implements MovableObject{
 	 * @param s
 	 * @throws MovableObjectException A movable object has to be placed on a surface, with definite coordinate. If one of the argument is null, this expcetion is thrown
 	 */
-	public Mow(Coordinate c, Surface s) throws MovableObjectException {
+	public Mower(Coordinate c, Surface s) throws MovableObjectException {
 		init(s,c);
 	}
 
@@ -80,13 +80,13 @@ public class Mow extends Observable implements MovableObject{
 	 * 
 	 * @param mowPos
 	 * @return
-	 * @throws InvalidParsingLine
+	 * @throws InvalidParsingLineException
 	 * @throws MovableObjectException 
 	 */
-	public static Mow parseMow(String mowPos, Surface s) throws InvalidParsingLine, MovableObjectException {
+	public static Mower parseMow(String mowPos, Surface s) throws InvalidParsingLineException, MovableObjectException {
 		
 		Coordinate c = Coordinate.parseCoordinate(mowPos);
-		return new Mow(c, s);
+		return new Mower(c, s);
 
 	}
 

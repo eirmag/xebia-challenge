@@ -5,12 +5,12 @@ import java.util.List;
 
 import fr.nunix.MowItNow.controler.LetterConvention;
 import fr.nunix.MowItNow.object.MovableObject;
-import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLineException;
 
 public abstract class Command {
 	public abstract void execute(MovableObject m);
 
-	public static List<Command> parseCommands(String commands) throws InvalidParsingLine {
+	public static List<Command> parseCommands(String commands) throws InvalidParsingLineException {
 		
 		List<Command> list = new ArrayList<Command>();
 		
@@ -22,7 +22,7 @@ public abstract class Command {
 				list.add(new LeftCommand());
 			else if (c.equals(LetterConvention.RIGHT))
 				list.add(new RightCommand());
-			else throw new InvalidParsingLine("Instruction not recognized to move the mow");
+			else throw new InvalidParsingLineException("Instruction not recognized to move the mow");
 		}
 		
 		return list;

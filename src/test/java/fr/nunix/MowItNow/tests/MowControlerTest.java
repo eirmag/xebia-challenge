@@ -17,9 +17,9 @@ import org.junit.Test;
 
 import fr.nunix.MowItNow.command.Command;
 import fr.nunix.MowItNow.object.MovableObjectException;
-import fr.nunix.MowItNow.object.Mow;
+import fr.nunix.MowItNow.object.Mower;
 import fr.nunix.MowItNow.parse.Instruction;
-import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLineException;
 import fr.nunix.MowItNow.spatial.Orientation;
 import fr.nunix.MowItNow.surface.Coordinate;
 import fr.nunix.MowItNow.surface.OutOfBoundaryException;
@@ -43,7 +43,7 @@ public class MowControlerTest {
 
      
 	@Test
-	public void xebiaSet() throws InvalidParsingLine, MovableObjectException, IOException {
+	public void xebiaSet() throws InvalidParsingLineException, MovableObjectException, IOException {
 		Instruction instruction = new Instruction(new StringReader(finalTest));
 		List<Coordinate> lc = new ArrayList<Coordinate>();
 		lc.add(new Coordinate(1, 3, Orientation.NORTH));
@@ -52,7 +52,7 @@ public class MowControlerTest {
 	}
 	
 	@Test(expected=OutOfBoundaryException.class)
-	public void tooSmallLawn() throws InvalidParsingLine, MovableObjectException, IOException {
+	public void tooSmallLawn() throws InvalidParsingLineException, MovableObjectException, IOException {
 		Instruction instruction = new Instruction(new StringReader(finalTest2));
 		List<Coordinate> lc = new ArrayList<Coordinate>();
 		lc.add(new Coordinate(1, 3, Orientation.NORTH));
@@ -69,9 +69,9 @@ public class MowControlerTest {
 		System.out.println("Extracted Lawn : " + instruction.getLawn());
 		
 		int pos = 0;
-		for (Pair<Mow, List<Command>> pair : instruction.getMows()){
+		for (Pair<Mower, List<Command>> pair : instruction.getMows()){
 			
-			Mow m = pair.getValue0();
+			Mower m = pair.getValue0();
 			assertNotNull(m);
 			
 			System.out.println("--- Mow : " + m);
