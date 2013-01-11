@@ -7,6 +7,7 @@ instruction
 -----------
 
 If you want to test the project, please import it within eclipse, or test it directly with JUnit.
+
     mvn test
 
 The main application is `fr.nunix.MowItNow.parse.Instruction`. The application loads the set given by xebia and run the application. 
