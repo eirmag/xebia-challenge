@@ -2,10 +2,15 @@ package fr.nunix.MowItNow.surface;
 
 import java.util.StringTokenizer;
 
-import fr.nunix.MowItNow.imprt.InvalidParsingLine;
-import fr.nunix.MowItNow.spatial.NotSupportedOrientation;
+import fr.nunix.MowItNow.parse.InvalidParsingLine;
 import fr.nunix.MowItNow.spatial.Orientation;
 
+/**
+ * Indicate position of a movableobject on a field
+ * 
+ * @author gabriel
+ *
+ */
 public class Coordinate {
 
 	private int x;
@@ -16,63 +21,8 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 		this.orientation = o;
-		this.boundary = Boundary.NO_LIMIT;
 	}
 	
-	private Boundary boundary;
-	
-	public void setBoundary (Boundary boundary) throws OutOfBoundaryException{
-		if (!(boundary.heightMove(y) && boundary.widthMove(x)))
-			throw new OutOfBoundaryException("you are trying to put limit on an object already out of bound");
-		
-		this.boundary = boundary;
-	
-	}
-	
-
-	/**
-	 * We are in a 2D system, with both positive and negative values.
-	 * Boundaries are checked by the lawn
-	 * @param boundary 
-	 * 
-	 * @return
-	 * @throws NotSupportedOrientation
-	 */
-	public Coordinate forward()  {
-		switch (this.orientation) {
-		case EAST:
-			if (boundary.widthMove(x+1))
-				x += 1;
-			break;
-		case NORTH:
-			if (boundary.heightMove(y+1))
-				y += 1;
-			
-			break;
-		case WEST:
-			if (boundary.widthMove(x-1))
-				x -= 1;
-			break;
-		case SOUTH:
-			if (boundary.heightMove(y-1))
-				y -= 1;
-			break;
-		}
-		
-		return this;
-
-	}
-
-	public Coordinate right() {
-		this.orientation = orientation.right();
-		return this;
-
-	}
-
-	public Coordinate left() {
-		this.orientation = orientation.left();
-		return this;
-	}
 
 	public int getX() {
 		return this.x;
@@ -140,5 +90,23 @@ public class Coordinate {
 			.append(this.orientation)
 			.append(")").toString();
 			
+	}
+
+
+	/** 
+	 * update both (x,y) coordinates
+	 * @param x2
+	 * @param y2
+	 */
+	public void update(int x2, int y2) {
+		this.x = x2;
+		this.y = y2;
+		
+	}
+
+
+	public void setOrientation(Orientation o) {
+		this.orientation = o;
+		
 	}
 }

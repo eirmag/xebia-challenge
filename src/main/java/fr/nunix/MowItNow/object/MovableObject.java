@@ -8,7 +8,7 @@ import fr.nunix.MowItNow.surface.Surface;
 
 public interface MovableObject {
 	/**
-	 * set a surface and position the movable object to the currently register coordinate
+	 * move the movable object to a new surface, at the same position
 	 * @param surface
 	 */
 	void attach (Surface surface) throws MovableObjectException;
@@ -32,5 +32,9 @@ public interface MovableObject {
 	void execute(List<Command> commands);
 	
 	
-	
+	/**
+	 * Indicates when a sequence ends
+	 */
+	void end();
+
 }

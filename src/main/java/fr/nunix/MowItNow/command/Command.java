@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.nunix.MowItNow.controler.LetterConvention;
-import fr.nunix.MowItNow.imprt.InvalidParsingLine;
 import fr.nunix.MowItNow.object.MovableObject;
+import fr.nunix.MowItNow.parse.InvalidParsingLine;
 
 public abstract class Command {
 	public abstract void execute(MovableObject m);

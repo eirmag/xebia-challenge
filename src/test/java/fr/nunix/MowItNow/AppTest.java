@@ -2,11 +2,8 @@ package fr.nunix.MowItNow;
 
 import static org.junit.Assert.*;
 
-import java.util.Observer;
-
 import org.junit.Test;
 
-import fr.nunix.MowItNow.controler.App;
 import fr.nunix.MowItNow.object.MovableObjectException;
 import fr.nunix.MowItNow.object.Mow;
 import fr.nunix.MowItNow.spatial.Orientation;
@@ -38,6 +35,7 @@ public class AppTest {
         	m1.moveForward();
         }
         m1.moveForward();
+        m1.end();
         
        
         //m2.start("AADAADADDA");
@@ -52,6 +50,7 @@ public class AppTest {
     	m2.turnRight();
     	m2.turnRight();
     	m2.moveForward();
+    	m2.end();
         
     	
         assertEquals(m1.getPosition(), finalc1);
@@ -70,9 +69,6 @@ public class AppTest {
         
 
         Mow m1 = new Mow (c1, l);
-        
-        final Observer observer = new App();
-        m1.addObserver(observer);
         
         m1.turnLeft();
         m1.moveForward();
@@ -100,6 +96,7 @@ public class AppTest {
         assertEquals(m1.getPosition().getX(), 1);
         assertEquals(m1.getPosition().getY(), 1);
         assertEquals(m1.getPosition().getOrientation(), Orientation.NORTH);
+        m1.end();
 	}
 	
 	@Test
@@ -136,6 +133,8 @@ public class AppTest {
         assertEquals(m1.getPosition().getX(), 4);
         assertEquals(m1.getPosition().getY(), 4);
         assertEquals(m1.getPosition().getOrientation(), Orientation.SOUTH);
+        
+        m1.end();
 	}
 	
 
@@ -151,6 +150,8 @@ public class AppTest {
         m1.turnLeft();
         m1.moveForward();
         m1.moveForward();
+        m1.end();
+        
         
         fail("misplace of the object not detected");
 	}
@@ -168,6 +169,7 @@ public class AppTest {
         m1.turnLeft();
         m1.moveForward();
         m1.moveForward();
+        m1.end();
         
         fail("lawn is to be detected incorrectly");
 	}

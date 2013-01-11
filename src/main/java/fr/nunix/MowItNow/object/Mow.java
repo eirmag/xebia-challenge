@@ -4,14 +4,22 @@ import java.util.List;
 import java.util.Observable;
 
 import fr.nunix.MowItNow.command.Command;
-import fr.nunix.MowItNow.imprt.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLine;
+import fr.nunix.MowItNow.surface.OutOfBoundaryException;
 import fr.nunix.MowItNow.surface.Coordinate;
 import fr.nunix.MowItNow.surface.Surface;
 
 public class Mow extends Observable implements MovableObject{
 	
-	private Coordinate coordinate;
-	private Surface surface;
+	/**
+	 * current position of the mow
+	 */
+	private Coordinate position;
+	
+	/**
+	 * surface in which the mow moves
+	 */
+	private Surface surface; 
 
 	/**
 	 * 
@@ -24,16 +32,39 @@ public class Mow extends Observable implements MovableObject{
 	}
 
 	public void moveForward() {
-			this.coordinate.forward();		
+		int x = position.getX();
+		int y = position.getY();
+		switch (position.getOrientation()) {
+		case EAST:
+			if (surface.getBoundary().widthMove(x+1))
+				x += 1;
+			break;
+		case NORTH:
+			if (surface.getBoundary().heightMove(y+1))
+				y += 1;
+			
+			break;
+		case WEST:
+			if (surface.getBoundary().widthMove(x-1))
+				x -= 1;
+			break;
+		case SOUTH:
+			if (surface.getBoundary().heightMove(y-1))
+				y -= 1;
+			break;
+		}
+		
+		position.update(x,y);
+		
 	}
 
 
 	public void turnRight() {
-		this.coordinate.right();
+		position.setOrientation(position.getOrientation().right());
 	}
 
 	public void turnLeft() {
-		this.coordinate.left();
+		position.setOrientation(position.getOrientation().left());
 	}
 
 	/**
@@ -41,7 +72,7 @@ public class Mow extends Observable implements MovableObject{
 	 * @return the position which comprises (x,y,orientation) in the 2D lawn
 	 */
 	public Coordinate getPosition() {
-		return coordinate;
+		return position;
 	}
 
 	/**
@@ -60,7 +91,9 @@ public class Mow extends Observable implements MovableObject{
 	}
 
 	/**
-	 * Execute a bunch of commands on the 
+	 * Execute a bunch of commands on the mow,
+	 * and trigger the 'end' function
+	 * 
 	 * @param commands
 	 */
 	@Override
@@ -68,40 +101,55 @@ public class Mow extends Observable implements MovableObject{
 
 		for (Command c: commands)
 			c.execute(this);
-			
+		
+		end();
+		
+	}
+	
+	@Override
+	public void end (){
 		Coordinate position = getPosition();
 		setChanged();
 		notifyObservers(position);
-		
 	}
 
 	@Override
 	public void attach(Surface surface) throws MovableObjectException {
-		attach(surface, coordinate);
+		attach(surface, position);
 	}
 
 	@Override
 	public void attach(Surface surface, Coordinate initial) throws MovableObjectException {
 		init (surface, initial);
-		this.surface.notify(this);
-		
 		
 	}
 	
+	/**
+	 * Attach a surface to the mow, and set the boundary limit to the current internal plan.
+	 * We notify the surface that we are in its plan as well.
+	 * @param s
+	 * @param position
+	 * @throws MovableObjectException
+	 */
 	private void init (Surface s, Coordinate position) throws MovableObjectException{
 		if (null == position)
 			throw new MovableObjectException ("Coordinate can't be null");
 		if (null == s)
 			throw new MovableObjectException ("Surface can't be null");
 		
-		this.coordinate = position;
-		this.coordinate.setBoundary(s.getBoundary());
+		if (!(s.getBoundary().heightMove(position.getY()) 
+				&& s.getBoundary().widthMove(position.getX())))
+			throw new OutOfBoundaryException("The movable object is out of the surface boundaries. Please enlarge the surface or choose different initial position");
+		
+		
+		this.position = position;
 		this.surface = s;
+		this.surface.notify(this);
 	}
 	
 	@Override
 	public String toString() {
-		return "Mow@" + surface.toString() + " " + coordinate.toString();
+		return "Mow@" + surface.toString() + " " + position.toString();
 	}
 	
 

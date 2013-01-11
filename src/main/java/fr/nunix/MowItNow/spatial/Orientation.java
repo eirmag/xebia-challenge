@@ -1,7 +1,7 @@
 package fr.nunix.MowItNow.spatial;
 
 import fr.nunix.MowItNow.controler.LetterConvention;
-import fr.nunix.MowItNow.imprt.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLine;
 
 /**
  * Another possibility was to manage orientation given the degree angle, ranging

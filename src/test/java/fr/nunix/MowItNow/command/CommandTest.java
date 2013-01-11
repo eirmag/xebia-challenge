@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import fr.nunix.MowItNow.imprt.InvalidParsingLine;
+import fr.nunix.MowItNow.parse.InvalidParsingLine;
 
 public class CommandTest {
 
@@ -28,14 +28,14 @@ public class CommandTest {
 	@Test(expected= InvalidParsingLine.class) 
 	public void testWrongCommand() throws InvalidParsingLine{
 		String commands = "XEBIA";
-		List<Command> c = Command.parseCommands(commands);
+		Command.parseCommands(commands);
 		fail("Wrong command not detected");
 	}
 	
 	@Test(expected= InvalidParsingLine.class) 
 	public void testWrongCommand2() throws InvalidParsingLine{
 		String commands = "111";
-		List<Command> c = Command.parseCommands(commands);
+		Command.parseCommands(commands);
 		fail("Wrong command not detected");
 	}
 }

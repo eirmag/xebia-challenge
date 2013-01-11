@@ -2,57 +2,69 @@ package fr.nunix.MowItNow;
 
 import static org.junit.Assert.*;
 
-import org.javatuples.Pair;
 import org.junit.Test;
 
+import fr.nunix.MowItNow.object.MovableObject;
+import fr.nunix.MowItNow.object.MovableObjectException;
+import fr.nunix.MowItNow.object.Mow;
 import fr.nunix.MowItNow.spatial.NotSupportedOrientation;
 import fr.nunix.MowItNow.spatial.Orientation;
-import fr.nunix.MowItNow.surface.Boundary;
+import fr.nunix.MowItNow.surface.IncorrectLawnLimit;
+import fr.nunix.MowItNow.surface.InfiniteLawn;
+import fr.nunix.MowItNow.surface.Lawn;
 import fr.nunix.MowItNow.surface.Coordinate;
 import fr.nunix.MowItNow.surface.OutOfBoundaryException;
 
 public class CoordinateTest {
 	
-	private Boundary boundary;
-	
-	public CoordinateTest ()
-	{
-		this.boundary = new Boundary(new Pair<Integer, Integer>(0, 0), new Pair<Integer, Integer>(5, 5));
-		
-	}
-	
 	@Test
-	public void incrementWithBoundary () throws NotSupportedOrientation{
+	public void incrementWithBoundary () throws NotSupportedOrientation, MovableObjectException, IncorrectLawnLimit{
+		
 		Coordinate c = new Coordinate(0, 0, Orientation.SOUTH);
-		c.setBoundary(boundary);
-		c.forward().forward().forward();
+		MovableObject m = new Mow(c,new Lawn(0,0));
+		m.moveForward();
+		m.moveForward();
+		m.moveForward();
 		assertEquals (0, c.getX());
 		assertEquals (0, c.getY());
 		assertEquals (Orientation.SOUTH, c.getOrientation());
 	}
 	
 	@Test
-	public void increment () throws NotSupportedOrientation{
+	public void increment () throws NotSupportedOrientation, MovableObjectException{
 		Coordinate c = new Coordinate(0, 0, Orientation.SOUTH);
-		c.forward().forward().forward();
+		MovableObject m = new Mow(c,new InfiniteLawn());
+		m.moveForward();
+		m.moveForward();
+		m.moveForward();
 		assertEquals (0, c.getX());
 		assertEquals (-3, c.getY());
 		assertEquals (Orientation.SOUTH, c.getOrientation());
 	}
 	
 	@Test
-	public void roundAbout () throws NotSupportedOrientation{
+	public void roundAbout () throws NotSupportedOrientation, MovableObjectException{
 		Coordinate c = new Coordinate(4, 4, Orientation.SOUTH);
-		c.left().forward().left().forward().left().forward().left().forward();
+		MovableObject m = new Mow(c,new InfiniteLawn());
+		m.turnLeft();
+		m.moveForward();
+		m.turnLeft();
+		m.moveForward();
+		m.turnLeft();
+		m.moveForward();
+		m.turnLeft();
+		m.moveForward();
 		assertEquals (4, c.getX());
 		assertEquals (4, c.getY());
 		assertEquals (Orientation.SOUTH, c.getOrientation());
 	}
 	
 	@Test
-	public void turnAndMove () throws NotSupportedOrientation{
+	public void turnAndMove () throws NotSupportedOrientation, MovableObjectException{
 		Coordinate c = new Coordinate(1, 3, Orientation.WEST);
-		c.right().forward();
+		MovableObject m = new Mow(c,new InfiniteLawn());
+		m.turnRight();
+		m.moveForward();
 		assertEquals (1, c.getX());
 		assertEquals (4, c.getY());
 		assertEquals (Orientation.NORTH, c.getOrientation());
@@ -60,35 +72,39 @@ public class CoordinateTest {
 	
 
 	@Test
-	public void rotateRight () throws NotSupportedOrientation{
+	public void rotateRight () throws NotSupportedOrientation, MovableObjectException{
 		Coordinate c = new Coordinate(0, 0, Orientation.NORTH);
-		c.right();
+
+		MovableObject m = new Mow(c,new InfiniteLawn());
+		m.turnRight();
 		assertEquals (Orientation.EAST, c.getOrientation());
-		c.right();
+		m.turnRight();
 		assertEquals (Orientation.SOUTH, c.getOrientation());
-		c.right();
+		m.turnRight();
 		assertEquals (Orientation.WEST, c.getOrientation());
-		c.right();
+		m.turnRight();
 		assertEquals (Orientation.NORTH, c.getOrientation());
 	}
 	
 	@Test
-	public void rotateLeft () throws NotSupportedOrientation{
+	public void rotateLeft () throws NotSupportedOrientation, MovableObjectException{
 		Coordinate c = new Coordinate(0, 0, Orientation.NORTH);
-		c.left();
+
+		MovableObject m = new Mow(c,new InfiniteLawn());
+		m.turnLeft();
 		assertEquals (Orientation.WEST, c.getOrientation());
-		c.left();
+		m.turnLeft();
 		assertEquals (Orientation.SOUTH, c.getOrientation());
-		c.left();
+		m.turnLeft();
 		assertEquals (Orientation.EAST, c.getOrientation());
-		c.left();
+		m.turnLeft();
 		assertEquals (Orientation.NORTH, c.getOrientation());
 	}
 	
 	@Test(expected=OutOfBoundaryException.class)
-	public void outofboundary (){
+	public void outofboundary () throws MovableObjectException, IncorrectLawnLimit{
 		Coordinate c = new Coordinate(5, 6, Orientation.NORTH);
-		c.setBoundary(boundary);
+		new Mow(c,new Lawn(5,5));
 	}
 
 

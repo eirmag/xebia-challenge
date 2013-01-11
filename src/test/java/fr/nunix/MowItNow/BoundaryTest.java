@@ -6,12 +6,13 @@ import org.javatuples.Pair;
 import org.junit.Test;
 
 import fr.nunix.MowItNow.surface.Boundary;
+import fr.nunix.MowItNow.surface.SimpleBoundary;
 
 public class BoundaryTest {
 	
 	@Test
 	public void testBoundary(){
-		Boundary a = new Boundary(new Pair<Integer, Integer>(0, 0), new Pair<Integer, Integer>(4, 4));
+		Boundary a = new SimpleBoundary(new Pair<Integer, Integer>(0, 0), new Pair<Integer, Integer>(4, 4));
 		
 		assertTrue(a.widthMove(0));
 		assertTrue(a.widthMove(1));
@@ -29,7 +30,7 @@ public class BoundaryTest {
 	
 	@Test
 	public void testBoundaryLimit(){
-		Boundary a = new Boundary(new Pair<Integer, Integer>(-1, 0), new Pair<Integer, Integer>(3, 2));
+		Boundary a = new SimpleBoundary(new Pair<Integer, Integer>(-1, 0), new Pair<Integer, Integer>(3, 2));
 		
 		assertFalse(a.widthMove(-2));
 		assertFalse(a.widthMove(-10));

@@ -6,9 +6,14 @@ import java.util.StringTokenizer;
 
 import org.javatuples.Pair;
 
-import fr.nunix.MowItNow.imprt.InvalidParsingLine;
 import fr.nunix.MowItNow.object.MovableObject;
+import fr.nunix.MowItNow.parse.InvalidParsingLine;
 
+/**
+ * Concrete surface. there is no tree, bush, plants. It's a delimitate empty lawn.
+ * @author gabriel
+ *
+ */
 public class Lawn implements Surface{
 
 	private Set<MovableObject> movableObjects;
@@ -19,7 +24,7 @@ public class Lawn implements Surface{
 			throw new IncorrectLawnLimit();
 		
 		this.movableObjects = new HashSet<MovableObject>();
-		this.boundary = new Boundary (new Pair<Integer, Integer> (0,0), new Pair<Integer, Integer> (width,height));
+		this.boundary = new SimpleBoundary (new Pair<Integer, Integer> (0,0), new Pair<Integer, Integer> (width,height));
 	}
 
 	/**
@@ -48,7 +53,6 @@ public class Lawn implements Surface{
 
 	}
 
-
 	@Override
 	public void notify(MovableObject object) {
 		this.movableObjects.add(object);
@@ -62,7 +66,7 @@ public class Lawn implements Surface{
 	
 	@Override
 	public String toString() {
-		return "(" + this.boundary.upperLimit.getValue0() 
-				+ "," + this.boundary.upperLimit.getValue1() + ")";
+		return "(" + this.boundary.getUpperLimit().getValue0() 
+				+ "," + this.boundary.getUpperLimit().getValue1() + ")";
 	}
 }
